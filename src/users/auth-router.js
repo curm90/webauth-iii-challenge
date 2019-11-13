@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const generateToken = require('./token');
 
 const router = express.Router();
 
@@ -42,20 +42,5 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Could not login ' + error.message });
   }
 });
-
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-    roles: ['student']
-  };
-  const options = {
-    expiresIn: '1d'
-  };
-
-  const result = jwt.sign(payload, process.env.SECRET, options);
-
-  return result;
-}
 
 module.exports = router;
